@@ -10,6 +10,15 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    override func viewDidLoad() {
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(someAction)))
+         
+    }
+    
+    @objc func someAction() {
+        print("Hello")
+    }
+    
     private lazy var game = Set(suits: "🔴♥️♦️AQJ", cardsOnBoard: 12)
 
     @IBOutlet weak var threeMoreCardsButton: UIButton!
@@ -64,7 +73,7 @@ class ViewController: UIViewController {
         }
     }
     func associateCardWithAButton(card: Card, btn: UIButton) {
-        btn.setTitle(String(card.glyph), for: .normal)
+        btn.setTitle(String(card.symbol), for: .normal)
         btn.isEnabled = true
         
         if card.isPicked {
