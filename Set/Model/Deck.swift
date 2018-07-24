@@ -10,6 +10,7 @@ import Foundation
 
 struct CardDeck {
     private(set) var cards = [Card]()
+    static var count = 81
     
     init() {
         for number in 1...3 {
@@ -25,8 +26,8 @@ struct CardDeck {
     }
     
     mutating func draw() -> Card? {
-        if cards.count > 0 {
-            return cards.remove(at: cards.count.arc4random)
+        if let lastCard = cards.last, let lastCardIndex = cards.index(of: lastCard) {
+            return cards.remove(at: lastCardIndex)
         } else {
             return nil
         }

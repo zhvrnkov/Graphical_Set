@@ -17,6 +17,13 @@ extension Array where Element: Equatable {
         }
         return true
     }
+    
+    mutating func removeThis(element: Element) {
+        //        self.remove(at: self.index(of: elem))
+        if let indexOfElement = self.index(of: element) {
+            self.remove(at: indexOfElement)
+        }
+    }
 }
 
 extension Array {
@@ -34,12 +41,6 @@ extension Array {
         return self[count.arc4random]
     }
     
-    mutating func removeThis(element: Element) {
-        //        self.remove(at: self.index(of: elem))
-        if let indexOfElement = self.index(of: element) {
-            self.remove(at: indexOfElement)
-        }
-    }
 }
 
 extension Int {
