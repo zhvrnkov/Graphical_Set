@@ -39,7 +39,11 @@ struct Grid
     
     var layout: Layout { didSet { recalculate() } }
     
-    var frame: CGRect { didSet { recalculate() } }
+    var frame: CGRect {
+        didSet {
+            recalculate()
+        }
+    }
     
     init(layout: Layout, frame: CGRect = CGRect.zero) {
         self.frame = frame
@@ -97,7 +101,7 @@ struct Grid
     private var cellCountForAspectRatioLayout = 0 { didSet { recalculate() } }
     private var calculatedDimensions: (rowCount: Int, columnCount: Int) = (0, 0)
     
-    private mutating func recalculate() {
+    private mutating func recalculate() { // Calling right after init or if layout/frame is changed.
         switch layout {
         case .fixedCellSize(let cellSize):
             if cellSize.width > 0 && cellSize.height > 0 {
@@ -137,22 +141,24 @@ struct Grid
     private mutating func updateCellFrames(to cellSize: CGSize) {
         cellFrames.removeAll()
         
-        let boundingSize = CGSize(
+        let boundingSize = CGSize( // Area of all cards if their haven't margins between them
             width: CGFloat(dimensions.columnCount) * cellSize.width,
             height: CGFloat(dimensions.rowCount) * cellSize.height
         )
-        let offset = (
-            dx: (frame.size.width - boundingSize.width) / 2,
-            dy: (frame.size.height - boundingSize.height) / 2
+        let offset = ( // Frame area -(minus) Area of all cards
+            dx: (frame.size.width - boundingSize.width) / CGFloat(dimensions.rowCount),
+            dy: (frame.size.height - boundingSize.height)
         )
         var origin = frame.origin
+        print("BEFORE: \(origin.x)")
         origin.x += offset.dx
         origin.y += offset.dy
-
+        print("AFTER: \(origin.x)")
         if cellCount > 0 {
             for _ in 0..<cellCount {
-               cellFrames.append(CGRect(origin: origin, size: cellSize))
-                origin.x += cellSize.width
+//                print(origin)
+                cellFrames.append(CGRect(origin: origin, size: cellSize))
+                origin.x += cellSize.width + offset.dx
                 if round(origin.x) > round(frame.maxX - cellSize.width) {
                     origin.x = frame.origin.x + offset.dx
                     origin.y += cellSize.height
@@ -161,7 +167,7 @@ struct Grid
         }
     }
     
-    private func largestCellSizeThatFitsAspectRatio() -> CGSize {
+    private func largestCellSizeThatFitsAspectRatio() -> CGSize { // Called only for layout.aspectRatio
         var largestSoFar = CGSize.zero
         if cellCount > 0 && aspectRatio > 0 {
             for rowCount in 1...cellCount {

@@ -10,17 +10,16 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    private(set) var grid = Grid(layout: .aspectRatio(5/8))
+    private(set) var grid = Grid(layout: .aspectRatio(63.15/88.9))
     
     @IBOutlet weak var boardView: UIView! {
         didSet {
-            print(boardView.frame)
-            grid.frame = boardView.frame
-            print(grid.frame)
+//            grid.frame = CGRect(x: 0, y: 0, width: boardView.bounds.width, height: boardView.bounds.height * 0.95)
+            grid.frame = boardView.bounds
         }
     }
     
-    private var game = Set(cardsOnBoard: 12)
+    private(set) var game = Set(cardsToBoard: 12)
     
     override func viewDidLoad() {
         grid.cellCount = game.board.count
@@ -28,11 +27,11 @@ class ViewController: UIViewController {
     }
     
     func getViewsForCards() {
-        print(grid.frame)
         for indexOfBoardCard in game.board.indices {
-            if let frameForCard = grid[indexOfBoardCard], let _ = game.board[indexOfBoardCard] {
+            if let frameForCard = grid[indexOfBoardCard] {
                 let cardView = CardView(frame: frameForCard)
                 boardView.addSubview(cardView)
+                print(cardView.frame)
             }
         }
     }

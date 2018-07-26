@@ -10,7 +10,7 @@ import Foundation
 
 class Set {
     private(set) var deck = CardDeck()
-    private(set) var board: Array<Card?> = Array(repeating: nil, count: CardDeck.count)
+    private(set) var board = [Card]()
 ////    private(set) var stringOfSuits: [Character]
 ////    private(set) var cardsInDeck = 81
     private(set) var scoreCount = 0 {
@@ -59,20 +59,14 @@ class Set {
 //    }
 //    
     func putCardsOnBoard(amount: Int) {
-//        if deck.cards.count < amount { return }
-        var countOfIterations = amount
-        for index in board.indices {
-            if board[index] == nil, countOfIterations > 0, deck.cards.indices.contains(index) {
-                board[index] = deck.draw()
-                countOfIterations -= 1
+        for _ in 1...amount {
+            if let card = deck.draw() {
+                board.append(card)
             }
         }
     }
-//
-//
-    init(cardsOnBoard: Int) {
-        putCardsOnBoard(amount: cardsOnBoard)
-        print("Initialization is completed")
+    init(cardsToBoard: Int) {
+        putCardsOnBoard(amount: cardsToBoard)
     }
 }
 //
