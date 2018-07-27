@@ -43,6 +43,8 @@ struct Card: Hashable {
         static var all: [CardSymbols] {
             return [CardSymbols.diamond, .oval, .squiggle]
         }
+        
+        
     }
     
     enum CardShadings {

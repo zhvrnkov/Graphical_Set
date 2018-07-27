@@ -58,7 +58,7 @@ class Set {
 //        }
 //    }
 //    
-    func putCardsOnBoard(amount: Int) {
+    func draw(cards amount: Int) {
         for _ in 1...amount {
             if let card = deck.draw() {
                 board.append(card)
@@ -66,7 +66,7 @@ class Set {
         }
     }
     init(cardsToBoard: Int) {
-        putCardsOnBoard(amount: cardsToBoard)
+        draw(cards: cardsToBoard)
     }
 }
 //

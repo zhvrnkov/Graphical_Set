@@ -9,32 +9,59 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
+    private(set) var game = Set(cardsToBoard: 12)
+    
     private(set) var grid = Grid(layout: .aspectRatio(63.15/88.9))
     
+    private(set) var cardViews = [CardView]()
+    
+    override func viewDidLoad() {
+        getViewsForCards()
+    }
+
     @IBOutlet weak var boardView: UIView! {
         didSet {
-//            grid.frame = CGRect(x: 0, y: 0, width: boardView.bounds.width, height: boardView.bounds.height * 0.95)
             grid.frame = boardView.bounds
         }
     }
     
-    private(set) var game = Set(cardsToBoard: 12)
-    
-    override func viewDidLoad() {
-        grid.cellCount = game.board.count
-        getViewsForCards()
+    @IBAction func panGestureOnBoardView(_ sender: UIPanGestureRecognizer) {
+        switch sender.state {
+        case .ended:
+            game.draw(cards: 3)
+            getViewsForCards()
+        default:
+            break
+        }
     }
     
     func getViewsForCards() {
-        for indexOfBoardCard in game.board.indices {
-            if let frameForCard = grid[indexOfBoardCard] {
-                let cardView = CardView(frame: frameForCard)
-                boardView.addSubview(cardView)
-                print(cardView.frame)
+        grid.cellCount = game.board.count
+        
+        let howManyCardViewsNeedToAdd = game.board.count - cardViews.count
+        
+        for indexOfAddAction in 0..<howManyCardViewsNeedToAdd {
+            let card = game.board[game.board.count - indexOfAddAction - 1]
+            let cardView = CardView(symbol: card.symbol, number: card.number, color: card.color, shadings: card.shading)
+            cardViews.append(cardView)
+            boardView.addSubview(cardView)
+        }
+        
+        for indexOfCardView in cardViews.indices {
+            if let newFrame = grid[indexOfCardView] {
+                cardViews[indexOfCardView].frame = newFrame
+                boardView.setNeedsDisplay()
+                boardView.setNeedsLayout()
             }
         }
     }
+    
+//    func draw(cards amount: Int) {
+//        for _ in 1...amount {
+//            game.deck.draw()
+//        }
+//    }
 
 //    @IBOutlet weak var threeMoreCardsButton: UIButton!
     
