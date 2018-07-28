@@ -111,13 +111,6 @@ class CardView: UIView {
                 path.addLine(to: CGPoint(x: x, y: bounds.maxY))
                 path.stroke()
             }
-//            for y in stride(from: 0, to: bounds.width, by: bounds.width / 10) {
-//                let path = UIBezierPath()
-//                path.move(to: CGPoint(x: bounds.origin.x, y: bounds.origin.y))
-//                path.addLine(to: CGPoint(x: bounds.width, y: y))
-//                path.stroke()
-//            }
-        
         }
     }
     
@@ -135,6 +128,7 @@ class CardView: UIView {
     }
     
     func stateChangesRecognizer() {
+        layer.cornerRadius = cornerRadius
         switch state {
         case .selected:
             layer.borderWidth = cornerOffset
@@ -155,9 +149,7 @@ class CardView: UIView {
         
         drawASymbol(in: roundedRect.bounds, setColorViewPreferencesFotThatSymbol: setShadingsForCard)
         
-        layer.cornerRadius = cornerRadius
-        layer.borderWidth = 1
-        layer.borderColor = UIColor.black.cgColor
+        stateChangesRecognizer()
         
     }
     
@@ -199,16 +191,6 @@ extension CardView {
     private var cornerFontSize: CGFloat { // bigger bounds require bigger font size
         return bounds.size.height * SizeRatio.cornerFontSizeToBoundsHeight
     }
-//    private var rankString: String {
-//        switch rank {
-//        case 1: return "A"
-//        case 2...10: return String(rank)
-//        case 11: return "J"
-//        case 12: return "Q"
-//        case 13: return "K"
-//        default: return "?"
-//        }
-//    }
 }
 
 extension CGRect {

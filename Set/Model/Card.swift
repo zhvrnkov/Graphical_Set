@@ -28,9 +28,7 @@ struct Card: Hashable {
                 && (lhs.color == rhs.color)
     }
     
-// MARK: - Card attributes
-//    var isPicked = false
-    
+// MARK: - Card attributes    
     let number : Int
     let symbol : CardSymbols
     let shading: CardShadings

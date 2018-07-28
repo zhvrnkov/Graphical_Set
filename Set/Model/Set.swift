@@ -25,17 +25,16 @@ class SetGame {
     
     var delegate: SetGameDelegate?
     
-//    func pickThis(_ card: Card) {
-//        lastCards.append(card)
-//        print(lastCards)
-//    }
-//
-//    func unPickThis(_ card: Card) {
-//        lastCards.remove(at: lastCards.index(of: card)!)
-//        print(lastCards)
-//    }
-//
-    func isSet(selectedCard: [Card]) -> Bool {
+    private(set) var selectedCards = [Card]()
+    
+    func selectThis(card: Card) {
+        selectedCards.append(card)
+    }
+
+    func unSelectThisCard(card: Card) {
+        selectedCards.removeThis(element: card)    }
+
+    func isSet(in selectedCard: [Card]) -> Bool {
         let color  = Set(selectedCard.map{ $0.color }).count
         let shape  = Set(selectedCard.map{ $0.symbol }).count
         let number = Set(selectedCard.map{ $0.number }).count
@@ -51,46 +50,14 @@ class SetGame {
         }
     }
     
-    func checkSelectedCards() {
-        
+    func checkSelectedCards(cb: ((Int) -> Void)? = nil) {
+        if isSet(in: selectedCards) {
+            removeSettedCardsFromBoard(selectedCards: selectedCards)
+            cb?(3)
+        }
+        selectedCards.removeAll()
     }
     
-    
-//    func chooseCard(at index: Int, cb: (() -> Void)? = nil) {
-//        if !board[index]!.isPicked {
-//            checkCards(cb: cb)
-//
-//            board[index]!.isPicked = true
-//            lastCards.append(board[index]!)
-//
-//        } else if lastCards.count < 3 {
-//            lastCards.removeThis(element: board[index]!)
-//            board[index]!.isPicked = false
-//            scoreCount -= 1
-//        }
-//    }
-//
-//    func checkCards(cb: (() -> Void)? = nil) {
-//        if lastCards.count == 3 {
-//            if lastCards.allEqual() {
-//                for card in lastCards {
-//                    if board.contains(card) {
-//                        board[board.index(of: card)!] = nil
-//                        lastCards.removeThis(element: card)
-//                    }
-//                }
-//                cb?()
-//                scoreCount += 3
-//            } else {
-//                for index in board.indices {
-//                    board[index]?.isPicked = false
-//                }
-//                scoreCount -= 5
-//            }
-//            lastCards.removeAll()
-//        }
-//    }
-//    
     func draw(cards amount: Int) {
         for _ in 1...amount {
             if let card = deck.draw() {
@@ -98,9 +65,6 @@ class SetGame {
             }
         }
     }
-//    init(cardsToBoard: Int) {
-//        draw(cards: cardsToBoard)
-//    }
 }
 
 protocol SetGameDelegate {
