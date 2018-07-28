@@ -13,28 +13,27 @@ class CardView: UIView {
     //  MARK: - Symdol drawing.
     let symbol: Card.CardSymbols
     
-    private func drawASymbol(in bounds: CGRect) -> UIBezierPath? {
+    private func drawASymbol(in bounds: CGRect, setColorViewPreferences: (UIBezierPath) -> Void) {
+        let context: UIBezierPath
         switch symbol {
         case .diamond:
-            let context = UIBezierPath()
+            context = UIBezierPath()
             context.move(to: CGPoint(x: bounds.midX, y: bounds.midY - bounds.maxX * 0.25)) // 1
             context.addLine(to: CGPoint(x: bounds.midX - bounds.maxX * 0.4, y: bounds.midY)) // 2
             context.addLine(to: CGPoint(x: bounds.midX, y: bounds.midY + bounds.maxX * 0.25)) // 3
             context.addLine(to: CGPoint(x: bounds.midX + bounds.maxX * 0.4, y: bounds.midY)) // 4
             context.close()
             
-            return context
-            
         case .oval:
-            let context = UIBezierPath(ovalIn: CGRect(origin: CGPoint(x: bounds.midX - bounds.maxX * 0.4, y: bounds.midY - bounds.maxX * 0.25), size: CGSize(width: bounds.maxX * 0.8, height: bounds.maxX * 0.5)))
-            
-            return context
+            context = UIBezierPath(ovalIn: CGRect(origin: CGPoint(x: bounds.midX - bounds.maxX * 0.4, y: bounds.midY - bounds.maxX * 0.25), size: CGSize(width: bounds.maxX * 0.8, height: bounds.maxX * 0.5)))
             
         case .squiggle:
-            let context = UIBezierPath(rect: CGRect(origin: CGPoint(x: bounds.midX - bounds.maxX * 0.4, y: bounds.midY - bounds.maxX * 0.25), size: CGSize(width: bounds.maxX * 0.8, height: bounds.maxX * 0.5)))
+            context = UIBezierPath(rect: CGRect(origin: CGPoint(x: bounds.midX - bounds.maxX * 0.4, y: bounds.midY - bounds.maxX * 0.25), size: CGSize(width: bounds.maxX * 0.8, height: bounds.maxX * 0.5)))
             
-            return context
         }
+        context.lineWidth = borderSize
+        context.addClip()
+        setColorViewPreferences(context)
     }
     //  MARK: - Number drawing.
     let number: Int
@@ -77,7 +76,9 @@ class CardView: UIView {
   
     // MARK: - Color and shadings
     
-    func getColorForCard(color: Card.CardColor) -> UIColor {
+    let color: Card.CardColor
+    
+    func getColorForCard() -> UIColor {
         switch color {
         case .green:
             return UIColor.green
@@ -88,17 +89,35 @@ class CardView: UIView {
         }
     }
     
-//    func getShadingsForCard(shadings: Card.CardShadings) {
-//        switch shadings {
-//        case .open:
-//            
-//        case .solid:
-//            
-//        case .striped:
-//            
-//        
-//        }
-//    }
+    let shadings: Card.CardShadings
+    
+    func setShadingsForCard(in context: UIBezierPath) {
+        let color = getColorForCard()
+        switch shadings {
+        case .open:
+            color.setStroke()
+            context.stroke()
+        case .solid:
+            color.setFill()
+            context.fill()
+        case .striped:
+            color.setStroke()
+            context.stroke()
+            for x in stride(from: 0, to: bounds.width, by: bounds.width / 20) {
+                let path = UIBezierPath()
+                path.move(to: CGPoint(x: x, y: bounds.origin.y))
+                path.addLine(to: CGPoint(x: x, y: bounds.maxY))
+                path.stroke()
+            }
+//            for y in stride(from: 0, to: bounds.width, by: bounds.width / 10) {
+//                let path = UIBezierPath()
+//                path.move(to: CGPoint(x: bounds.origin.x, y: bounds.origin.y))
+//                path.addLine(to: CGPoint(x: bounds.width, y: y))
+//                path.stroke()
+//            }
+        
+        }
+    }
     
     //MARK: -
     
@@ -108,10 +127,7 @@ class CardView: UIView {
         UIColor.white.setFill()
         roundedRect.fill()
         
-        if let shape = drawASymbol(in: roundedRect.bounds) {
-            UIColor.black.setStroke()
-            shape.stroke()
-        }
+        drawASymbol(in: roundedRect.bounds, setColorViewPreferences: setShadingsForCard)
         
         layer.cornerRadius = cornerRadius
         layer.borderWidth = 1
@@ -122,6 +138,8 @@ class CardView: UIView {
     init(frame: CGRect = CGRect.zero, symbol: Card.CardSymbols, number: Int, color: Card.CardColor, shadings: Card.CardShadings) {
         self.symbol = symbol
         self.number = number
+        self.color = color
+        self.shadings = shadings
         
         super.init(frame: frame)
     }
@@ -143,6 +161,10 @@ extension CardView {
         static let cornerRadiusToBoundsHeight: CGFloat = 0.06
         static let cornerOffsetToCornerRadius: CGFloat = 0.33
         static let faceCardImageSizeToBoundsSize: CGFloat = 0.75
+        static let borderSizeToBoundsSize: CGFloat = 1000
+    }
+    private var borderSize: CGFloat {
+        return SizeRatio.borderSizeToBoundsSize / bounds.size.height
     }
     private var cornerRadius: CGFloat { // cornerRadius is proportional to the bounds
         return bounds.size.height * SizeRatio.cornerRadiusToBoundsHeight
