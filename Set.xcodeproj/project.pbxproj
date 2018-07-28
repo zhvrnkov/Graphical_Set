@@ -10,6 +10,7 @@
 		CA2ABEAC2107829D00C1E0B8 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2ABEAB2107829D00C1E0B8 /* Grid.swift */; };
 		CA2ABEAE2107868000C1E0B8 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2ABEAD2107868000C1E0B8 /* CardView.swift */; };
 		CA2ABEB02107AFA300C1E0B8 /* Deck.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2ABEAF2107AFA300C1E0B8 /* Deck.swift */; };
+		CA3610F5210CCE02009E86CA /* Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3610F4210CCE02009E86CA /* Set.swift */; };
 		CA7B1CE620DE0D570075A0CE /* exstension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7B1CE520DE0D570075A0CE /* exstension.swift */; };
 		CA817D6B20DD649D00ECD725 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA817D6A20DD649D00ECD725 /* AppDelegate.swift */; };
 		CA817D6D20DD649D00ECD725 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA817D6C20DD649D00ECD725 /* ViewController.swift */; };
@@ -17,13 +18,13 @@
 		CA817D7220DD64A000ECD725 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA817D7120DD64A000ECD725 /* Assets.xcassets */; };
 		CA817D7520DD64A000ECD725 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA817D7320DD64A000ECD725 /* LaunchScreen.storyboard */; };
 		CA817D8620DE059B00ECD725 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA817D8420DE059A00ECD725 /* Card.swift */; };
-		CA817D8720DE059B00ECD725 /* Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA817D8520DE059A00ECD725 /* Set.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		CA2ABEAB2107829D00C1E0B8 /* Grid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		CA2ABEAD2107868000C1E0B8 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		CA2ABEAF2107AFA300C1E0B8 /* Deck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deck.swift; sourceTree = "<group>"; };
+		CA3610F4210CCE02009E86CA /* Set.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Set.swift; sourceTree = "<group>"; };
 		CA7B1CE520DE0D570075A0CE /* exstension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = exstension.swift; sourceTree = "<group>"; };
 		CA817D6720DD649D00ECD725 /* Set.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Set.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA817D6A20DD649D00ECD725 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -33,7 +34,6 @@
 		CA817D7420DD64A000ECD725 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CA817D7620DD64A000ECD725 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CA817D8420DE059A00ECD725 /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
-		CA817D8520DE059A00ECD725 /* Set.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Set.swift; sourceTree = "<group>"; wrapsLines = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,7 +96,7 @@
 		CA817D8820DE05B700ECD725 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				CA817D8520DE059A00ECD725 /* Set.swift */,
+				CA3610F4210CCE02009E86CA /* Set.swift */,
 				CA2ABEAF2107AFA300C1E0B8 /* Deck.swift */,
 				CA817D8420DE059A00ECD725 /* Card.swift */,
 			);
@@ -185,8 +185,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA3610F5210CCE02009E86CA /* Set.swift in Sources */,
 				CA2ABEAE2107868000C1E0B8 /* CardView.swift in Sources */,
-				CA817D8720DE059B00ECD725 /* Set.swift in Sources */,
 				CA817D6D20DD649D00ECD725 /* ViewController.swift in Sources */,
 				CA7B1CE620DE0D570075A0CE /* exstension.swift in Sources */,
 				CA2ABEB02107AFA300C1E0B8 /* Deck.swift in Sources */,

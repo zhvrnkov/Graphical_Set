@@ -8,11 +8,13 @@
 
 import Foundation
 
-class Set {
+class SetGame {
     private(set) var deck = CardDeck()
-    private(set) var board = [Card]()
-////    private(set) var stringOfSuits: [Character]
-////    private(set) var cardsInDeck = 81
+    private(set) var board = [Card]() {
+        didSet {
+            delegate?.updateViewFromModel()
+        }
+    }
     private(set) var scoreCount = 0 {
         didSet {
             if scoreCount < 0 {
@@ -20,23 +22,54 @@ class Set {
             }
         }
     }
-////    private(set) var lastCards = [Card]()
+    
+    var delegate: SetGameDelegate?
+    
+//    func pickThis(_ card: Card) {
+//        lastCards.append(card)
+//        print(lastCards)
+//    }
 //
-//    
+//    func unPickThis(_ card: Card) {
+//        lastCards.remove(at: lastCards.index(of: card)!)
+//        print(lastCards)
+//    }
+//
+    func isSet(selectedCard: [Card]) -> Bool {
+        let color  = Set(selectedCard.map{ $0.color }).count
+        let shape  = Set(selectedCard.map{ $0.symbol }).count
+        let number = Set(selectedCard.map{ $0.number }).count
+        let fill   = Set(selectedCard.map{ $0.shading }).count
+
+
+        return color != 2 && shape != 2 && number != 2 && fill != 2
+    }
+    
+    func removeSettedCardsFromBoard(selectedCards: [Card]) {
+        selectedCards.forEach {
+            board.removeThis(element: $0)
+        }
+    }
+    
+    func checkSelectedCards() {
+        
+    }
+    
+    
 //    func chooseCard(at index: Int, cb: (() -> Void)? = nil) {
 //        if !board[index]!.isPicked {
 //            checkCards(cb: cb)
-//            
+//
 //            board[index]!.isPicked = true
 //            lastCards.append(board[index]!)
-//            
+//
 //        } else if lastCards.count < 3 {
 //            lastCards.removeThis(element: board[index]!)
 //            board[index]!.isPicked = false
 //            scoreCount -= 1
 //        }
 //    }
-//    
+//
 //    func checkCards(cb: (() -> Void)? = nil) {
 //        if lastCards.count == 3 {
 //            if lastCards.allEqual() {
@@ -65,28 +98,11 @@ class Set {
             }
         }
     }
-    init(cardsToBoard: Int) {
-        draw(cards: cardsToBoard)
-    }
+//    init(cardsToBoard: Int) {
+//        draw(cards: cardsToBoard)
+//    }
 }
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
+protocol SetGameDelegate {
+    func updateViewFromModel()
+}

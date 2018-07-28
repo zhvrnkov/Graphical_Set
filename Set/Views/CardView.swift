@@ -10,12 +10,20 @@ import UIKit
 
 class CardView: UIView {
     
-    //  MARK: - Symdol drawing.
-    let symbol: Card.CardSymbols
+    let card: Card
     
-    private func drawASymbol(in bounds: CGRect, setColorViewPreferences: (UIBezierPath) -> Void) {
+    override var frame: CGRect {
+        didSet {
+            setNeedsDisplay()
+            setNeedsLayout()
+        }
+    }
+    
+    //  MARK: - Symdol drawing.
+    
+    private func drawASymbol(in bounds: CGRect, setColorViewPreferencesFotThatSymbol: (UIBezierPath) -> Void) {
         let context: UIBezierPath
-        switch symbol {
+        switch card.symbol {
         case .diamond:
             context = UIBezierPath()
             context.move(to: CGPoint(x: bounds.midX, y: bounds.midY - bounds.maxX * 0.25)) // 1
@@ -33,11 +41,9 @@ class CardView: UIView {
         }
         context.lineWidth = borderSize
         context.addClip()
-        setColorViewPreferences(context)
+        setColorViewPreferencesFotThatSymbol(context)
     }
     //  MARK: - Number drawing.
-    let number: Int
-    
     private func getScaledFont() -> UIFont {
         var font = UIFont.preferredFont(forTextStyle: .body).withSize(cornerFontSize)
         font = UIFontMetrics(forTextStyle: .body).scaledFont(for: font)
@@ -53,7 +59,7 @@ class CardView: UIView {
     
     private func configureCornerLabel(_ label: UILabel) {
         label.font = getScaledFont()
-        label.text = String(number)
+        label.text = String(card.number)
         label.frame.size = CGSize.zero
         label.sizeToFit()
     }
@@ -76,10 +82,8 @@ class CardView: UIView {
   
     // MARK: - Color and shadings
     
-    let color: Card.CardColor
-    
     func getColorForCard() -> UIColor {
-        switch color {
+        switch card.color {
         case .green:
             return UIColor.green
         case .red:
@@ -89,11 +93,9 @@ class CardView: UIView {
         }
     }
     
-    let shadings: Card.CardShadings
-    
-    func setShadingsForCard(in context: UIBezierPath) {
+    func setShadingsForCard(context: UIBezierPath) {
         let color = getColorForCard()
-        switch shadings {
+        switch card.shading {
         case .open:
             color.setStroke()
             context.stroke()
@@ -119,15 +121,39 @@ class CardView: UIView {
         }
     }
     
-    //MARK: -
+    //MARK: - Recognize State changes.
     
+    enum State {
+        case selected
+        case unselected
+    }
+    
+    var state: State {
+        didSet {
+            stateChangesRecognizer()
+        }
+    }
+    
+    func stateChangesRecognizer() {
+        switch state {
+        case .selected:
+            layer.borderWidth = cornerOffset
+            layer.borderColor = UIColor.red.cgColor
+        
+        case .unselected:
+            layer.borderWidth = 1
+            layer.borderColor = UIColor.black.cgColor
+        }
+    }
+    
+    //MARK: - Draw() and Initialization.
     override func draw(_ rect: CGRect) {
         let roundedRect = UIBezierPath(roundedRect: bounds, cornerRadius: cornerRadius)
         roundedRect.addClip()
         UIColor.white.setFill()
         roundedRect.fill()
         
-        drawASymbol(in: roundedRect.bounds, setColorViewPreferences: setShadingsForCard)
+        drawASymbol(in: roundedRect.bounds, setColorViewPreferencesFotThatSymbol: setShadingsForCard)
         
         layer.cornerRadius = cornerRadius
         layer.borderWidth = 1
@@ -135,12 +161,10 @@ class CardView: UIView {
         
     }
     
-    init(frame: CGRect = CGRect.zero, symbol: Card.CardSymbols, number: Int, color: Card.CardColor, shadings: Card.CardShadings) {
-        self.symbol = symbol
-        self.number = number
-        self.color = color
-        self.shadings = shadings
-        
+    init(frame: CGRect = CGRect.zero, card: Card) {
+        self.card = card
+        self.state = .unselected
+//        self.addGe
         super.init(frame: frame)
     }
     
@@ -161,7 +185,7 @@ extension CardView {
         static let cornerRadiusToBoundsHeight: CGFloat = 0.06
         static let cornerOffsetToCornerRadius: CGFloat = 0.33
         static let faceCardImageSizeToBoundsSize: CGFloat = 0.75
-        static let borderSizeToBoundsSize: CGFloat = 1000
+        static let borderSizeToBoundsSize: CGFloat = 500
     }
     private var borderSize: CGFloat {
         return SizeRatio.borderSizeToBoundsSize / bounds.size.height

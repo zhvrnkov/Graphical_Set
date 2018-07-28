@@ -8,16 +8,32 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, SetGameDelegate {
     
-    private(set) var game = Set(cardsToBoard: 12)
+    private(set) var game = SetGame()
     
     private(set) var grid = Grid(layout: .aspectRatio(63.15/88.9))
     
     private(set) var cardViews = [CardView]()
     
-    override func viewDidLoad() {
-        getViewsForCards()
+    private var isSet: Bool {
+        return game.isSet(selectedCard: selectedCardViews.map {$0.card})
+    }
+    
+    private(set) var selectedCardViews = [CardView]() {
+        didSet {
+            if selectedCardViews.count == 3 {
+                print(isSet)
+                if isSet {
+                    game.removeSettedCardsFromBoard(selectedCards: selectedCardViews.map{ $0.card })
+                } else {
+                    cardViews.forEach { $0.state = .unselected }
+                    selectedCardViews.removeAll()
+                }
+                
+            }
+            print(boardView.subviews.count)
+        }
     }
 
     @IBOutlet weak var boardView: UIView! {
@@ -26,33 +42,70 @@ class ViewController: UIViewController {
         }
     }
     
+    override func viewDidLoad() {
+        game.delegate = self
+        game.draw(cards: 12)
+    }
+    
     @IBAction func panGestureOnBoardView(_ sender: UIPanGestureRecognizer) {
         switch sender.state {
         case .ended:
             game.draw(cards: 3)
-            getViewsForCards()
         default:
             break
         }
     }
     
-    func getViewsForCards() {
+    func updateViewFromModel() {
         grid.cellCount = game.board.count
         
-        let howManyCardViewsNeedToAdd = game.board.count - cardViews.count
+        let differenceBetweenBoardAndView = game.board.count - cardViews.count
         
-        for indexOfAddAction in 0..<howManyCardViewsNeedToAdd {
-            let card = game.board[game.board.count - indexOfAddAction - 1]
-            let cardView = CardView(symbol: card.symbol, number: card.number, color: card.color, shadings: card.shading)
-            cardViews.append(cardView)
-            boardView.addSubview(cardView)
+        if differenceBetweenBoardAndView >= 0 {
+            for indexOfAddAction in 0..<differenceBetweenBoardAndView {
+                let card = game.board[game.board.count - indexOfAddAction - 1]
+                let cardView = CardView(card: card)
+                cardView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(cardTapped)))
+                cardViews.append(cardView)
+                boardView.addSubview(cardView)
+            }
+        } else {
+            cardViews.forEach {
+                if !game.board.contains($0.card) {
+                    $0.removeFromSuperview()
+                    cardViews.removeThis(element: $0)
+                }
+            }
         }
+        
+        
+        
         
         for indexOfCardView in cardViews.indices {
             if let newFrame = grid[indexOfCardView] {
                 cardViews[indexOfCardView].frame = newFrame
-                boardView.setNeedsDisplay()
-                boardView.setNeedsLayout()
+//                boardView.setNeedsDisplay()
+//                boardView.setNeedsLayout()
+            }
+        }
+    }
+    
+    @objc func cardTapped(_ recognizer: UITapGestureRecognizer) {
+        guard let cardView = recognizer.view as? CardView else { return }
+    
+        switch cardView.state {
+        case .unselected:
+            cardView.state = .selected
+            selectedCardViews.append(cardView)
+            print(selectedCardViews)
+            
+        case .selected:
+            if selectedCardViews.count < 2 {
+                selectedCardViews.removeThis(element: cardView)
+                cardView.state = .unselected
+                print(selectedCardViews)
+            } else {
+                break
             }
         }
     }
