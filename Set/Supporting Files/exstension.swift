@@ -10,7 +10,6 @@ import Foundation
 
 extension Array where Element: Equatable {
    mutating func removeThis(element: Element) {
-        //        self.remove(at: self.index(of: elem))
         if let indexOfElement = self.index(of: element) {
             self.remove(at: indexOfElement)
         }
