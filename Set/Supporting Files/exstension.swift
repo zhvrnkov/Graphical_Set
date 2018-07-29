@@ -9,16 +9,7 @@
 import Foundation
 
 extension Array where Element: Equatable {
-    func allEqual() -> Bool {
-        if let firstElem = self.first {
-            for elem in self {
-                if elem != firstElem { return false }
-            }
-        }
-        return true
-    }
-    
-    mutating func removeThis(element: Element) {
+   mutating func removeThis(element: Element) {
         //        self.remove(at: self.index(of: elem))
         if let indexOfElement = self.index(of: element) {
             self.remove(at: indexOfElement)
@@ -36,11 +27,6 @@ extension Array {
             num -= 1
         }
     }
-    
-    func randomElement() -> Element {
-        return self[count.arc4random]
-    }
-    
 }
 
 extension Int {
