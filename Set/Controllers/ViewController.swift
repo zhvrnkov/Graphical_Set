@@ -12,17 +12,11 @@ class ViewController: UIViewController, SetGameDelegate {
     
     private(set) var game = SetGame()
     
-    private(set) var grid = Grid(layout: .aspectRatio(63.15/88.9))
-    
     private(set) var cardViews = [CardView]()
 
-    @IBOutlet weak var boardView: UIView! {
-        didSet {
-            grid.frame = boardView.bounds
-        }
-    }
+    @IBOutlet weak var boardView: UIView!
     
-    override func viewDidLoad() {
+    override func viewDidLayoutSubviews() {
         game.delegate = self
         game.draw(cards: 12)
     }
@@ -45,6 +39,7 @@ class ViewController: UIViewController, SetGameDelegate {
     }
     
     func updateViewFromModel() {
+        var grid = Grid(layout: .aspectRatio(63.15/88.9), frame: boardView.bounds)
         grid.cellCount = game.board.count
         
         let differenceBetweenBoardAndView = game.board.count - cardViews.count
