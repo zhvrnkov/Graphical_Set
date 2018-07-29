@@ -1,4 +1,2 @@
 # Graphical_Set
-"Assigment 3: Graphical Set" implementation. 
-
-somthing so
+### "Assigment 3: Graphical Set" implementation. 
