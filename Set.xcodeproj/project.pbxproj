@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CA07200421120E31000AA818 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA07200321120E31000AA818 /* Player.swift */; };
 		CA2ABEAC2107829D00C1E0B8 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2ABEAB2107829D00C1E0B8 /* Grid.swift */; };
 		CA2ABEAE2107868000C1E0B8 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2ABEAD2107868000C1E0B8 /* CardView.swift */; };
 		CA2ABEB02107AFA300C1E0B8 /* Deck.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2ABEAF2107AFA300C1E0B8 /* Deck.swift */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CA07200321120E31000AA818 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		CA2ABEAB2107829D00C1E0B8 /* Grid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		CA2ABEAD2107868000C1E0B8 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		CA2ABEAF2107AFA300C1E0B8 /* Deck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deck.swift; sourceTree = "<group>"; };
@@ -83,11 +85,11 @@
 		CA817D6920DD649D00ECD725 /* Set */ = {
 			isa = PBXGroup;
 			children = (
-				CA817D8920DE05D100ECD725 /* Supporting Files */,
-				CA2ABEAA2107826600C1E0B8 /* Controllers */,
-				CA2ABEA9210781C300C1E0B8 /* Views */,
-				CA817D6E20DD649D00ECD725 /* Main.storyboard */,
 				CA817D8820DE05B700ECD725 /* Model */,
+				CA2ABEA9210781C300C1E0B8 /* Views */,
+				CA2ABEAA2107826600C1E0B8 /* Controllers */,
+				CA817D8920DE05D100ECD725 /* Supporting Files */,
+				CA817D6E20DD649D00ECD725 /* Main.storyboard */,
 				CA817D7620DD64A000ECD725 /* Info.plist */,
 			);
 			path = Set;
@@ -99,6 +101,7 @@
 				CA3610F4210CCE02009E86CA /* Set.swift */,
 				CA2ABEAF2107AFA300C1E0B8 /* Deck.swift */,
 				CA817D8420DE059A00ECD725 /* Card.swift */,
+				CA07200321120E31000AA818 /* Player.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -192,6 +195,7 @@
 				CA2ABEB02107AFA300C1E0B8 /* Deck.swift in Sources */,
 				CA817D8620DE059B00ECD725 /* Card.swift in Sources */,
 				CA817D6B20DD649D00ECD725 /* AppDelegate.swift in Sources */,
+				CA07200421120E31000AA818 /* Player.swift in Sources */,
 				CA2ABEAC2107829D00C1E0B8 /* Grid.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

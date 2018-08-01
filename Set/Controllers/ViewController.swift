@@ -10,28 +10,41 @@ import UIKit
 
 class ViewController: UIViewController, SetGameDelegate {
     
-    private(set) var game = SetGame()
+    private(set) var game = SetGame(cooperateMode: true)
     
     private(set) var cardViews = [CardView]()
 
     @IBOutlet weak var boardView: UIView!
     
-    override func viewDidLayoutSubviews() {
+    override func viewDidLoad() {
         game.delegate = self
         game.draw(cards: 12)
+    }
+    
+    
+    override func viewDidLayoutSubviews() {
+        updateViewFromModel()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
     
+    func checkCardInVC() {
+        game.checkSelectedCards(cb: game.draw)
+        cardViews.forEach { $0.state = .unselected }
+    }
+    
+    @IBOutlet weak var scoreLabel: UILabel!
+    
     @IBAction func panGestureOnBoardView(_ sender: UIPanGestureRecognizer) {
         switch sender.state {
         case .ended:
             if game.selectedCards.count != 3 {
                 game.draw(cards: 3)
+                game.timeIntreval *= 2
             } else {
-                game.checkSelectedCards()
+                checkCardInVC()
             }
         default:
             break
@@ -61,14 +74,15 @@ class ViewController: UIViewController, SetGameDelegate {
             }
         }
         
-        
-        
-        
         for indexOfCardView in cardViews.indices {
             if let newFrame = grid[indexOfCardView] {
                 cardViews[indexOfCardView].frame = newFrame
             }
         }
+    }
+    
+    func updateScoreView(with score: Int) {
+        scoreLabel.text = String(score)
     }
     
     @objc func cardTapped(_ recognizer: UITapGestureRecognizer) {
@@ -77,8 +91,7 @@ class ViewController: UIViewController, SetGameDelegate {
         switch cardView.state {
         case .unselected:
             if game.selectedCards.count == 3 {
-                game.checkSelectedCards(cb: game.draw)
-                cardViews.forEach { $0.state = .unselected }
+                checkCardInVC()
             }
             cardView.state = .selected
             game.selectThis(card: cardView.card)
